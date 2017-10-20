@@ -17,6 +17,7 @@ class BulmaPreset extends Preset
     {
         static::updatePackages();
         static::updateSass();
+        static::updateBootstrapping();
 
         if($withAuth)
         {
@@ -39,7 +40,7 @@ class BulmaPreset extends Preset
     protected static function updatePackageArray(array $packages)
     {
         return [
-            'bulma' => '^0.5.1',
+            'bulma' => '^0.6.0',
         ] + Arr::except($packages, ['bootstrap-sass', 'foundation-sites', 'uikit']);
     }
 
@@ -62,6 +63,22 @@ class BulmaPreset extends Preset
         copy(__DIR__.'/bulma-stubs/bulma.sass', resource_path('assets/sass/bulma.sass'));
         copy(__DIR__.'/bulma-stubs/app.scss', resource_path('assets/sass/app.scss'));
     }
+
+
+    /**
+     * Update the bootstrapping files.
+     *
+     * @return void
+     */
+    protected static function updateBootstrapping()
+    {
+        (new Filesystem)->delete(
+            resource_path('assets/js/bootstrap.js')
+        );
+
+        copy(__DIR__.'/bulma-stubs/bootstrap.js', resource_path('assets/js/bootstrap.js'));
+    }
+
 
     /**
      * Update the default welcome page file with Bulma buttons.
